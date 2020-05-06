@@ -14,7 +14,7 @@
           <th width="120">原價</th>
           <th width="120">售價</th>
           <th width="100">是否啟用</th>
-          <th width="80">管理</th>
+          <th width="140">管理</th>
         </tr>
       </thead>
       <tbody>
@@ -34,11 +34,18 @@
             >
               編輯
             </button>
+            <button
+              class="btn btn-outline-danger btn-sm"
+              @click.prevent="OpenRemove(item)"
+            >
+              刪除
+            </button>
           </td>
         </tr>
       </tbody>
     </table>
     <page :pages="pagination" v-on:chgpage="getproducts"/>
+    
     <div
       class="modal fade"
       id="ProductModal"
@@ -251,7 +258,7 @@
             >
               取消
             </button>
-            <button type="button" class="btn btn-danger">確認刪除</button>
+            <button type="button" class="btn btn-danger" @click="RemoveProduct">確認刪除</button>
           </div>
         </div>
       </div>
@@ -267,6 +274,7 @@ export default {
       products: [],
       pagination: {},
       tempProduct: {},
+      delProduct: {},
       isNews: false,
       isLoading: false,
       status: {
@@ -290,6 +298,30 @@ export default {
         vm.pagination = response.data.pagination;
         console.log(vm.pagination);
       });
+    },
+    OpenRemove(item){
+      const vm = this;
+      console.log(item);
+      vm.delProduct = item;
+      $("#delProductModal").modal("show");
+    },
+    RemoveProduct(){
+      const vm = this;
+      console.log('1236');
+      let api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/admin/product/${vm.delProduct.id}`;
+      this.$http.delete(api).then(response => {
+        console.log(response.data);
+        if (response.data.success){
+          $("#delProductModal").modal("hide");
+          vm.getproducts();
+        }
+        else{
+          $("#delProductModal").modal("hide");
+          vm.getproducts();
+          console.log('刪除失敗!!');
+        }
+      });
+      $("#delProductModal").modal("hide");
     },
     OpenModal(isNew, item) {
       const vm = this;

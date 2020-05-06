@@ -34,9 +34,15 @@
     </ul>
   </nav>
 </template>
+<style scoped>
+nav {
+  display: table;
+  margin: 0 auto;
+}
+</style>
 <script>
 export default {
-  props: ['pages'],
+  props: ["pages"],
   data() {
     return {
       pagination: {}
@@ -52,11 +58,9 @@ export default {
       });
     },
     gotoParent(item) {
-      this.$emit('chgpage', item);
+      this.$emit("chgpage", item);
     }
   },
-  created() {
-
-  }
+  created() {}
 };
 </script>
