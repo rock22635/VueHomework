@@ -38,6 +38,7 @@
         </tr>
       </tbody>
     </table>
+    <page :pages="pagination" v-on:chgpage="getproducts"/>
     <nav aria-label="Page navigation example">
       <ul class="pagination">
         <li class="page-item" :class="{ 'disabled': !pagination.has_pre }">
@@ -292,6 +293,7 @@
 </template>
 <script>
 import $ from "jquery";
+import page from './Pagination';
 export default {
   data() {
     return {
@@ -304,6 +306,9 @@ export default {
         fileupload: false
       }
     };
+  },
+  components:{
+    page
   },
   methods: {
     getproducts(page = 1) {
