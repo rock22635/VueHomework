@@ -9,7 +9,7 @@ module.exports = {
 
     // Paths
     assetsSubDirectory: 'static',
-    assetsPublicPath: '/',
+    assetsPublicPath: '/VueHomeWorkBuild/',
     proxyTable: {},
 
     // Various Dev Server settings

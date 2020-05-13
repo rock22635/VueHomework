@@ -49,18 +49,9 @@ export default {
     };
   },
   methods: {
-    getproducts(page = 1) {
-      const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/admin/products?page=${page}`;
-      const vm = this;
-      this.$http.get(api).then(response => {
-        vm.pages = response.data.pagination;
-        console.log(vm.pagination);
-      });
-    },
     gotoParent(item) {
       this.$emit("chgpage", item);
     }
-  },
-  created() {}
+  }
 };
 </script>
