@@ -14,22 +14,23 @@
           <th>購買項目</th>
           <th width="120">應付金額</th>
           <th width="100">是否付款</th>
-          
         </tr>
       </thead>
       <tbody>
-        <tr>
+        <tr v-for="item in orders">
+          <td>{{ formattimspantodate(item.create_at) }}</td>
+          <td>{{ item.user.email }}</td>
           <td></td>
-          <td></td>
-          <td class="text-right"></td>
-          <td class="text-right"></td>
+          <td class="text-right">{{item.total|currency}}</td>
           <td>
+            <span v-if="item.is_paid" class="text-success">已付款</span>
+            <span v-else>未付款</span>
           </td>
         </tr>
       </tbody>
     </table>
-    <page :pages="pagination" v-on:chgpage="getproducts"/>
-    
+    <page :pages="pagination" v-on:chgpage="getorders" />
+
     <div
       class="modal fade"
       id="ProductModal"
@@ -206,52 +207,11 @@
         </div>
       </div>
     </div>
-    <div
-      class="modal fade"
-      id="delProductModal"
-      tabindex="-1"
-      role="dialog"
-      aria-labelledby="exampleModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog" role="document">
-        <div class="modal-content border-0">
-          <div class="modal-header bg-danger text-white">
-            <h5 class="modal-title" id="exampleModalLabel">
-              <span>刪除產品</span>
-            </h5>
-            <button
-              type="button"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Close"
-            >
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            是否刪除
-            <strong class="text-danger"></strong>
-            商品(刪除後將無法恢復)。
-          </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-outline-secondary"
-              data-dismiss="modal"
-            >
-              取消
-            </button>
-            <button type="button" class="btn btn-danger" @click="RemoveProduct">確認刪除</button>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
 </template>
 <script>
 import $ from "jquery";
-import page from './Pagination';
+import page from "./Pagination";
 export default {
   data() {
     return {
@@ -266,7 +226,7 @@ export default {
       }
     };
   },
-  components:{
+  components: {
     page
   },
   methods: {
@@ -307,10 +267,10 @@ export default {
         console.log(response.data);
         if (response.data.success) {
           $("#ProductModal").modal("hide");
-          vm.getproducts();
+          vm.getorders();
         } else {
           $("#ProductModal").modal("hide");
-          vm.getproducts();
+          vm.getorders();
           console.log("新增失敗!!");
         }
       });
@@ -339,10 +299,24 @@ export default {
           }
         });
       //  this.$http.post()
+    },
+    formattimspantodate(timespan) {
+      var date = new Date(timespan * 1000);
+      var dataValues = date.toISOString().split("T");
+      var dataValues2 = [
+        date.getFullYear(),
+        date.getMonth() + 1,
+        date.getDate(),
+        date.getHours(),
+        date.getMinutes(),
+        date.getSeconds()
+      ];
+      console.log(dataValues, dataValues[0]);
+      return dataValues[0];
     }
   },
   created() {
-    // this.getproducts();
+    this.getorders();
   }
 };
 </script>

@@ -6,6 +6,13 @@ import VueAxios from 'vue-axios';
 import Loading from 'vue-loading-overlay';
 import 'vue-loading-overlay/dist/vue-loading.css';
 import 'bootstrap';
+import { ValidationProvider, extend } from 'vee-validate';
+import { required, email } from 'vee-validate/dist/rules';
+import { ValidationObserver } from 'vee-validate';
+import { localize } from 'vee-validate';
+import TW from 'vee-validate/dist/locale/zh_TW.json';
+
+
 import App from './App'
 
 import router from './router';
@@ -13,10 +20,16 @@ import './bus';
 import currencyFilter  from './filters/currency';
 Vue.config.productionTip = false
 Vue.use(VueAxios, axios)
+
 // Vue.prototype.$http = axios
 Vue.component("Loading",Loading);
 
 Vue.filter('currency', currencyFilter);
+extend('required', required);
+extend('email', email);
+localize('zh_TW', TW);
+Vue.component('ValidationProvider', ValidationProvider);
+Vue.component('ValidationObserver', ValidationObserver);
 
 axios.defaults.withCredentials = true;
 
